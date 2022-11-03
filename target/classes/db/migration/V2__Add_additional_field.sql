@@ -1,1 +1,0 @@
-ALTER TABLE weather ADD status VARCHAR(7);

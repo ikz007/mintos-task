@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: org.example.weatherforecast.controller.WeatherForecastControllerTest
--------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.094 s - in org.example.weatherforecast.controller.WeatherForecastControllerTest
