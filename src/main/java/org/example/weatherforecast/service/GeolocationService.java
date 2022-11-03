@@ -13,21 +13,16 @@ import java.util.Optional;
 public class GeolocationService {
 
     @Autowired
-    private LocationService locationService;
+    private LocationChainService locationService;
     @Autowired
     private IpAddressService ipAddressService;
-    @Autowired
-    private LocationProviderService locationProviderService;
     @Autowired
     private WeatherService weatherService;
 
     public Optional<Weather> process(HttpServletRequest request) {
         return Optional.of(request)
                 .map(ipAddressService::find)
-                .map(ip ->
-                        locationService.find(ip)
-                                .orElse(locationProviderService.find(ip))
-                )
+                .map(locationService::find)
                 .map(weatherService::find);
     }
 }

@@ -15,3 +15,21 @@ spring:
       ddl-auto: none
   flyway:
     encoding: UTF-8
+management:
+  endpoint:
+    health:
+      show-details: always
+  health:
+    ratelimiters:
+      enabled: true
+    circuitbreakers:
+      enabled: true
+resilience4j:
+  retry:
+    instances:
+      locationRetry:
+        maxAttempts: 2
+        waitDuration: 2s
+      weatherRetry:
+        maxAttempts: 3
+        waitDuration: 3s

@@ -1,11 +1,12 @@
 package org.example.weatherforecast.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.Ticker;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
+import org.example.weatherforecast.util.WeatherConstants;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,17 +17,26 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CacheConfiguration extends CachingConfigurerSupport {
 
-    private static final long CACHE_TIMEOUT_IN_HOURS = 2;
     @Bean
-    public Caffeine<Object, Object> caffeineConfig() {
-        log.debug("cache timeout: {}", CACHE_TIMEOUT_IN_HOURS);
-        return Caffeine.newBuilder().expireAfterWrite(CACHE_TIMEOUT_IN_HOURS, TimeUnit.HOURS);
+    public CaffeineCache weatherCache() {
+        return new CaffeineCache(WeatherConstants.WEATHER_CACHE_NAME,
+                Caffeine.newBuilder()
+                        .expireAfterWrite(WeatherConstants.WEATHER_CACHE_TIMEOUT_IN_HOURS, TimeUnit.HOURS)
+                        .build()
+        );
     }
 
     @Bean
-    public CacheManager cacheManager(Caffeine<Object, Object> caffeine) {
-        CaffeineCacheManager ccm = new CaffeineCacheManager();
-        ccm.setCaffeine(caffeine);
-        return ccm;
+    public CaffeineCache locationCache() {
+        return new CaffeineCache(WeatherConstants.LOCATION_CACHE_NAME,
+                Caffeine.newBuilder()
+                        .expireAfterWrite(WeatherConstants.LOCATION_CACHE_TIMEOUT_IN_HOURS, TimeUnit.HOURS)
+                        .build()
+        );
+    }
+
+    @Bean
+    public Ticker ticker() {
+        return Ticker.systemTicker();
     }
 }
