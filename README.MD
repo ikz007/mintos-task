@@ -1,3 +1,4 @@
+Jar and dependency check are available in extra directory.
 
 ## Used technologies
 
